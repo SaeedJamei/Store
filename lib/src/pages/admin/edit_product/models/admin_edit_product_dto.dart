@@ -2,7 +2,7 @@ class AdminEditProductDto {
   final String tittle;
   final String? description, image;
   final int count, price, id;
-  final List<dynamic> colors;
+  final List<String> colors;
   final bool isActive;
 
   AdminEditProductDto(

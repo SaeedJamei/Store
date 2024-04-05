@@ -1,7 +1,7 @@
 class CustomerDetailSelectedProductViewModel{
   final String tittle;
   final String? image, description;
-  final List<dynamic> colors;
+  final List<String> colors;
   final int price, count, selectedCount, id, userId, productId;
 
   CustomerDetailSelectedProductViewModel(
@@ -21,7 +21,7 @@ class CustomerDetailSelectedProductViewModel{
     return CustomerDetailSelectedProductViewModel(
       json['image'],
       json['description'],
-      json['colors'],
+      json['colors'].cast<String>(),
       id: json['id'],
       tittle: json['tittle'],
       price: json['price'],

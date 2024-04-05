@@ -19,7 +19,7 @@ class CustomerDetailProductController extends GetxController {
   RxInt price = RxInt(0);
   RxInt count = RxInt(0);
   RxInt id = RxInt(0);
-  List<dynamic> colors = [].obs;
+  List<String> colors = RxList<String>();
   RxBool isGetProductLoad = false.obs;
   RxBool isGetProductRetry = false.obs;
   RxBool isAddToShoppingCartLoad = false.obs;
@@ -87,7 +87,7 @@ class CustomerDetailProductController extends GetxController {
               description.value = right.description ?? '';
               price.value = right.price;
               count.value = right.count;
-              colors.addAll(right.colors);
+              colors.addAll(right.colors.cast<String>());
             },
           );
         }

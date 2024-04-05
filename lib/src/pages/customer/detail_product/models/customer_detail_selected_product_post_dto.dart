@@ -1,7 +1,7 @@
 class CustomerDetailSelectedProductPostDto{
   final String tittle;
   final String? image, description;
-  final List<dynamic> colors;
+  final List<String> colors;
   final int price, count, selectedCount, userId, productId;
 
   CustomerDetailSelectedProductPostDto(

@@ -1,7 +1,7 @@
 class CustomerDetailSelectedProductPatchDto{
   final String tittle;
   final String? image, description;
-  final List<dynamic> colors;
+  final List<String> colors;
   final int price, count, selectedCount, id, userId, productId;
 
   CustomerDetailSelectedProductPatchDto(

@@ -2,7 +2,7 @@ class AdminEditProductViewModel {
   final String tittle;
   final String? description, image;
   final int count, price, id;
-  final List<dynamic> colors;
+  final List<String> colors;
   final bool isActive;
 
   AdminEditProductViewModel(
@@ -20,7 +20,7 @@ class AdminEditProductViewModel {
     return AdminEditProductViewModel(
       json['image'],
       json['description'],
-      json['colors'],
+      json['colors'].cast<String>(),
       id: json['id'],
       tittle: json['tittle'],
       price: json['price'],

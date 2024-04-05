@@ -20,7 +20,7 @@ class CustomerDetailProductViewModel {
     return CustomerDetailProductViewModel(
       json['image'],
       json['description'],
-      json['colors'],
+      json['colors'].cast<String>(),
       id: json['id'],
       tittle: json['tittle'],
       price: json['price'],

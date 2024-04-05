@@ -21,7 +21,7 @@ class CustomerShoppingCartSelectedProductViewModel{
     return CustomerShoppingCartSelectedProductViewModel(
       json['image'],
       json['description'],
-      json['colors'],
+      json['colors'].cast<String>(),
       id: json['id'],
       userId: json['userId'],
       productId: json['productId'],

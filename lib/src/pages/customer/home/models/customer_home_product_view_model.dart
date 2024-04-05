@@ -1,7 +1,7 @@
 class CustomerHomeProductViewModel {
   final String tittle;
   final String? image, description;
-  final List<dynamic> colors;
+  final List<String> colors;
   final int price, count, id;
   final bool isActive;
 
@@ -20,7 +20,7 @@ class CustomerHomeProductViewModel {
     return CustomerHomeProductViewModel(
       json['image'],
       json['description'],
-      json['colors'],
+      json['colors'].cast<String>(),
       id: json['id'],
       tittle: json['tittle'],
       price: json['price'],

@@ -1,7 +1,7 @@
 class CustomerShoppingCartProductDto{
   final String tittle;
   final String? image, description;
-  final List<dynamic> colors;
+  final List<String> colors;
   final int price, count, id;
   final bool isActive;
 

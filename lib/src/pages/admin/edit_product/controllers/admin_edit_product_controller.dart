@@ -23,7 +23,7 @@ class AdminEditProductController extends GetxController {
       priceTextController = TextEditingController(),
       countTextController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey();
-  RxList<dynamic> colors = RxList();
+  RxList<String> colors = RxList();
   RxString image = ''.obs;
   Rx<Color> pickedColor = const Color(0xff04927c).obs;
   RxBool isActive = true.obs;
