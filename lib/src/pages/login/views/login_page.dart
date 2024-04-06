@@ -55,7 +55,7 @@ class LoginPage extends GetView<LoginController> {
         return ElevatedButton(
           onPressed: controller.isLoading.value ? null : controller.onLoginTap,
           child: controller.isLoading.value
-              ? const CircularProgressIndicator()
+              ? Transform.scale(scale: 0.75 ,child: const CircularProgressIndicator())
               : Text(LocaleKeys.login.tr),
         );
       }),
@@ -129,6 +129,7 @@ class LoginPage extends GetView<LoginController> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           obscureText: controller.isPasswordVisible.value,
           decoration: InputDecoration(
+            counterText: '',
             suffixIcon: InkWell(
                 onTap: controller.onEyeTap,
                 child: const Icon(Icons.remove_red_eye_outlined)),
@@ -158,6 +159,7 @@ class LoginPage extends GetView<LoginController> {
             : null,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
+          counterText: '',
           label: Text(
             LocaleKeys.userName.tr,
             overflow: TextOverflow.ellipsis,

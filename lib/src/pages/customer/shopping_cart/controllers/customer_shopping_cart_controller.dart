@@ -134,15 +134,15 @@ class CustomerShoppingCartController extends GetxController {
       final result1 = await _repository.getProducts(id: product.productId);
       isPaymentLoading.value = false;
       result1.fold(
-        (left) => Get.showSnackbar(
+            (left) => Get.showSnackbar(
           GetSnackBar(
             message: '${LocaleKeys.error.tr} : $left',
             duration: const Duration(seconds: 2),
           ),
         ),
-        (right) async {
+            (right) async {
           final CustomerShoppingCartProductDto dto =
-              CustomerShoppingCartProductDto(
+          CustomerShoppingCartProductDto(
             right.image,
             right.description,
             right.colors,
@@ -155,12 +155,12 @@ class CustomerShoppingCartController extends GetxController {
           final result2 = await _repository.patchProduct(dto: dto);
           isPaymentLoading.value = false;
           result2.fold(
-              (left) => Get.showSnackbar(
-                    GetSnackBar(
-                      message: '${LocaleKeys.error.tr} : $left',
-                      duration: const Duration(seconds: 2),
-                    ),
-                  ), (right) {
+                  (left) => Get.showSnackbar(
+                GetSnackBar(
+                  message: '${LocaleKeys.error.tr} : $left',
+                  duration: const Duration(seconds: 2),
+                ),
+              ), (right) {
             counter++;
           });
           if (counter == products.length) {
@@ -168,16 +168,16 @@ class CustomerShoppingCartController extends GetxController {
             for (final product in products) {
               isPaymentLoading.value = true;
               final result3 =
-                  await _repository.deleteSelectedProduct(id: product.id);
+              await _repository.deleteSelectedProduct(id: product.id);
               isPaymentLoading.value = false;
               result3.fold(
-                  (left) => Get.showSnackbar(
-                        GetSnackBar(
-                          message: '${LocaleKeys.error.tr} : $left',
-                          duration: const Duration(seconds: 2),
-                        ),
-                      ),
-                  (right) => counter++);
+                      (left) => Get.showSnackbar(
+                    GetSnackBar(
+                      message: '${LocaleKeys.error.tr} : $left',
+                      duration: const Duration(seconds: 2),
+                    ),
+                  ),
+                      (right) => counter++);
             }
             if (counter == products.length) {
               products.clear();

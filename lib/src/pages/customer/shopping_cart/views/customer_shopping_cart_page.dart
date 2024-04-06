@@ -87,6 +87,6 @@ class CustomerShoppingCartPage extends GetView<CustomerShoppingCartController> {
               ? null
               : controller.onPaymentPressed,
       child: controller.isPaymentLoading.value
-          ? const CircularProgressIndicator()
+          ? Transform.scale(scale: 0.75 ,child: const CircularProgressIndicator())
           : Text(LocaleKeys.payment.tr));
 }

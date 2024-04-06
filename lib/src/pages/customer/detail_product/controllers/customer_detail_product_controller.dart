@@ -19,7 +19,7 @@ class CustomerDetailProductController extends GetxController {
   RxInt price = RxInt(0);
   RxInt count = RxInt(0);
   RxInt id = RxInt(0);
-  List<String> colors = RxList<String>();
+  RxList<String> colors = RxList();
   RxBool isGetProductLoad = false.obs;
   RxBool isGetProductRetry = false.obs;
   RxBool isAddToShoppingCartLoad = false.obs;

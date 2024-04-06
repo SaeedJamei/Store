@@ -8,7 +8,6 @@ import '../../../../../generated/locales.g.dart';
 import '../models/admin_home_view_model.dart';
 import '../repositories/admin_home_repository.dart';
 
-
 class AdminHomeController extends GetxController {
   final AdminHomeRepository _repository = AdminHomeRepository();
   final SharedPreferences _preferences = Get.find<SharedPreferences>();
@@ -61,10 +60,10 @@ class AdminHomeController extends GetxController {
         duration: const Duration(seconds: 2),
       ));
     }, (right) {
-     if(right.isNotEmpty){
-       minPrice.value = right[0].price;
-       maxPrice.value = right[(right.length - 1)].price;
-     }
+      if (right.isNotEmpty) {
+        minPrice.value = right[0].price;
+        maxPrice.value = right[(right.length - 1)].price;
+      }
       if (maxPrice.value == minPrice.value) {
         maxPrice.value = maxPrice.value + 1;
       }
@@ -74,11 +73,10 @@ class AdminHomeController extends GetxController {
   }
 
   Future<void> onAddPressed() async {
-    final result =
-        await Get.toNamed(RouteNames.adminHomePage + RouteNames.adminAddProductPage);
-    if(result != null){
-      final AdminHomeViewModel product =
-      AdminHomeViewModel.fromJson(result);
+    final result = await Get.toNamed(
+        RouteNames.adminHomePage + RouteNames.adminAddProductPage);
+    if (result != null) {
+      final AdminHomeViewModel product = AdminHomeViewModel.fromJson(result);
       products.add(product);
       getMaxAndMinPrice();
     }
@@ -91,7 +89,7 @@ class AdminHomeController extends GetxController {
     Get.offAllNamed(RouteNames.loginPage);
   }
 
-  Future<void> onActiveSwitchTap(newValue, AdminHomeViewModel product) async{
+  Future<void> onActiveSwitchTap(newValue, AdminHomeViewModel product) async {
     AdminHomeDto dto = AdminHomeDto(
       product.image,
       product.description,
@@ -126,15 +124,12 @@ class AdminHomeController extends GetxController {
         RouteNames.adminHomePage + RouteNames.adminEditProductPage,
         parameters: {'id': id.toString()});
 
-    if(result != null){
-      AdminHomeViewModel product =
-      AdminHomeViewModel.fromJson(result);
+    if (result != null) {
+      AdminHomeViewModel product = AdminHomeViewModel.fromJson(result);
       int index = products.indexWhere((element) => element.id == product.id);
       products[index] = product;
       getMaxAndMinPrice();
     }
-
-
   }
 
   Future<void> onFilterPressed() async {

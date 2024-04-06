@@ -168,6 +168,7 @@ class CustomerHomePage extends GetView<CustomerHomeController> {
           controller: controller.searchTextController,
           onChanged: (value) => controller.onSearchTextChange(value),
           decoration: const InputDecoration(
+            counterText: '',
               suffixIcon: Icon(Icons.search),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(

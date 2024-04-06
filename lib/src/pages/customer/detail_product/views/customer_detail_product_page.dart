@@ -69,7 +69,7 @@ class CustomerDetailProductPage
               ? null
               : controller.onAddToCartTap,
           child: controller.isAddToShoppingCartLoad.value
-              ? const CircularProgressIndicator()
+              ? Transform.scale(scale: 0.75 ,child: const CircularProgressIndicator())
               : Text(LocaleKeys.addToCart.tr),
         );
       });

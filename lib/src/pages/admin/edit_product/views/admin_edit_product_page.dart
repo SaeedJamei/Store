@@ -53,7 +53,7 @@ class AdminEditProductPage extends GetView<AdminEditProductController> {
       onPressed:
           controller.isEditLoading.value ? null : controller.onEditPressed,
       child: controller.isEditLoading.value
-          ? const CircularProgressIndicator()
+          ? Transform.scale(scale: 0.75 ,child: const CircularProgressIndicator())
           : Text(LocaleKeys.edit.tr));
 
   Widget _addColors(BuildContext context) => Padding(

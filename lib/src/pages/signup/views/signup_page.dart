@@ -34,7 +34,7 @@ class SignupPage extends GetView<SignupController> {
         return ElevatedButton(
           onPressed: controller.isLoading.value ? null : controller.onSignupTap,
           child: controller.isLoading.value
-              ? const CircularProgressIndicator()
+              ? Transform.scale(scale: 0.75 ,child: const CircularProgressIndicator())
               : Text(LocaleKeys.signup.tr),
         );
       });

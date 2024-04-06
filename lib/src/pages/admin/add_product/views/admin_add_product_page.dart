@@ -37,7 +37,7 @@ class AdminAddProductPage extends GetView<AdminAddProductController> {
       onPressed:
           controller.isLoading.value ? null : controller.onRegisterPressed,
       child: controller.isLoading.value
-          ? const CircularProgressIndicator()
+          ? Transform.scale(scale: 0.75 ,child: const CircularProgressIndicator())
           : Text(LocaleKeys.register.tr)));
 
   Widget _addColors(BuildContext context) => Padding(
