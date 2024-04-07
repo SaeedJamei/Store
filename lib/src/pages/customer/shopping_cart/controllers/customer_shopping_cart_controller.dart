@@ -10,7 +10,6 @@ class CustomerShoppingCartController extends GetxController {
   final CustomerShoppingCartRepository _repository =
       CustomerShoppingCartRepository();
   RxList<CustomerShoppingCartSelectedProductViewModel> products = RxList();
-  RxList<int> productTotalPrice = RxList();
   RxBool isGetProductsLoading = false.obs;
   RxBool isGetProductsRetry = false.obs;
   RxBool isDisable = false.obs;
@@ -40,7 +39,6 @@ class CustomerShoppingCartController extends GetxController {
       for (final product in right) {
         allTotalPrice.value =
             allTotalPrice.value + (product.selectedCount * product.price);
-        productTotalPrice.add(product.selectedCount * product.price);
       }
     });
   }
@@ -70,7 +68,6 @@ class CustomerShoppingCartController extends GetxController {
       )),
       (right) {
         allTotalPrice.value = allTotalPrice.value + product.price;
-        productTotalPrice[index] = productTotalPrice[index] + product.price;
         products[index] =
             CustomerShoppingCartSelectedProductViewModel.fromJson(right);
       },
@@ -101,7 +98,6 @@ class CustomerShoppingCartController extends GetxController {
               duration: const Duration(seconds: 2),
             )), (right) {
       allTotalPrice.value = allTotalPrice.value - product.price;
-      productTotalPrice[index] = productTotalPrice[index] - product.price;
       products[index] =
           CustomerShoppingCartSelectedProductViewModel.fromJson(right);
     });
@@ -122,7 +118,6 @@ class CustomerShoppingCartController extends GetxController {
             ), (right) {
       allTotalPrice.value = 0;
       products.clear();
-      productTotalPrice.clear();
       getSelectedProductsByUserId();
     });
   }

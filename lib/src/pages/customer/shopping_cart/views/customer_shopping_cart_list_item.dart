@@ -80,7 +80,7 @@ class CustomerShoppingCartListItem
                   ),
                   Expanded(
                     child: Text(
-                      '${controller.productTotalPrice[index]} \$',
+                      '${product.selectedCount * product.price} \$',
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
