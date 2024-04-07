@@ -128,64 +128,84 @@ class CustomerShoppingCartController extends GetxController {
   }
 
   Future<void> onPaymentPressed() async {
-    int counter = 0;
+    List<CustomerShoppingCartProductDto> dtoList = [];
     for (final product in products) {
       isPaymentLoading.value = true;
       final result1 = await _repository.getProducts(id: product.productId);
       isPaymentLoading.value = false;
       result1.fold(
-            (left) => Get.showSnackbar(
+          (left) => Get.showSnackbar(
+                GetSnackBar(
+                  message: '${LocaleKeys.error.tr} : $left',
+                  duration: const Duration(seconds: 2),
+                ),
+              ), (right) async {
+        final CustomerShoppingCartProductDto dto =
+            CustomerShoppingCartProductDto(
+          right.image,
+          right.description,
+          right.colors,
+          id: right.id,
+          tittle: right.tittle,
+          price: right.price,
+          count: (right.count - product.selectedCount),
+        );
+        dtoList.add(dto);
+      });
+    }
+    if (dtoList.length == products.length) {
+      await patchToProductsAndRemoveFromSelectedProducts(dtoList);
+    } else {
+      await onPaymentPressed();
+    }
+  }
+
+  Future<void> patchToProductsAndRemoveFromSelectedProducts(
+      List<CustomerShoppingCartProductDto> dtoList) async {
+    int counter = 0;
+    for (final dto in dtoList) {
+      isPaymentLoading.value = true;
+      final result2 = await _repository.patchProduct(dto: dto);
+      isPaymentLoading.value = false;
+      result2.fold(
+        (left) => Get.showSnackbar(
           GetSnackBar(
             message: '${LocaleKeys.error.tr} : $left',
             duration: const Duration(seconds: 2),
           ),
         ),
-            (right) async {
-          final CustomerShoppingCartProductDto dto =
-          CustomerShoppingCartProductDto(
-            right.image,
-            right.description,
-            right.colors,
-            id: right.id,
-            tittle: right.tittle,
-            price: right.price,
-            count: (right.count - product.selectedCount),
-          );
-          isPaymentLoading.value = true;
-          final result2 = await _repository.patchProduct(dto: dto);
-          isPaymentLoading.value = false;
-          result2.fold(
-                  (left) => Get.showSnackbar(
+        (right) {
+          counter++;
+        },
+      );
+    }
+    if (counter == products.length) {
+      await removeFromSelectedProducts();
+    } else {
+      await patchToProductsAndRemoveFromSelectedProducts(dtoList);
+    }
+  }
+
+  Future<void> removeFromSelectedProducts() async {
+    int counter = 0;
+    for (final product in products) {
+      isPaymentLoading.value = true;
+      final result3 = await _repository.deleteSelectedProduct(id: product.id);
+      isPaymentLoading.value = false;
+      result3.fold(
+          (left) => Get.showSnackbar(
                 GetSnackBar(
                   message: '${LocaleKeys.error.tr} : $left',
                   duration: const Duration(seconds: 2),
                 ),
-              ), (right) {
-            counter++;
-          });
-          if (counter == products.length) {
-            counter = 0;
-            for (final product in products) {
-              isPaymentLoading.value = true;
-              final result3 =
-              await _repository.deleteSelectedProduct(id: product.id);
-              isPaymentLoading.value = false;
-              result3.fold(
-                      (left) => Get.showSnackbar(
-                    GetSnackBar(
-                      message: '${LocaleKeys.error.tr} : $left',
-                      duration: const Duration(seconds: 2),
-                    ),
-                  ),
-                      (right) => counter++);
-            }
-            if (counter == products.length) {
-              products.clear();
-              Get.back();
-            }
-          }
-        },
-      );
+              ),
+          (right) => counter++);
+    }
+    if (counter == products.length) {
+      products.clear();
+      Get.back();
+    } else {
+      await removeFromSelectedProducts();
     }
   }
 }

@@ -13,12 +13,12 @@ class LoginController extends GetxController {
   final TextEditingController userNameTextController = TextEditingController(),
       passwordTextController = TextEditingController();
   final SharedPreferences _preferences = Get.find<SharedPreferences>();
-  RxBool isPasswordVisible = true.obs;
+  RxBool isPasswordInvisible = true.obs;
   RxBool isLoading = false.obs;
   RxBool isRemember = false.obs;
 
   void onEyeTap() {
-    isPasswordVisible.value = !isPasswordVisible.value;
+    isPasswordInvisible.value = !isPasswordInvisible.value;
   }
 
   void onRememberCheckChange(newValue) {
