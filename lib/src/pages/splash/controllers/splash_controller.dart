@@ -9,11 +9,11 @@ class SplashController extends GetxController{
   @override
   void onInit() {
     super.onInit();
-    Future.delayed(const Duration(seconds: 3)).then((value) => preferencesGet());
+    Future.delayed(const Duration(seconds: 3)).then((value) => selectRoute());
   }
 
 
-  void preferencesGet(){
+  void selectRoute(){
     if(Params.userId == null){
       Get.offNamed(RouteNames.loginPage);
     }else if(Params.isAdmin!){
