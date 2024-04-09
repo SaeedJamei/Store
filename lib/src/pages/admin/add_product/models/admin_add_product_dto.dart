@@ -1,7 +1,7 @@
 class AdminAddProductDto {
   final String tittle;
   final String? description , image;
-  final int count, price;
+  final int count, price, sellerId;
   final List<String> colors;
   final bool isActive;
 
@@ -12,6 +12,7 @@ class AdminAddProductDto {
     required this.tittle,
     required this.count,
     required this.price,
+    required this.sellerId,
   })  : isActive = true;
 
   Map<String, dynamic> toJson() {
@@ -20,6 +21,7 @@ class AdminAddProductDto {
       'description': description,
       'count': count,
       'price': price,
+      'sellerId': sellerId,
       'image': image,
       'colors': colors,
       'isActive': isActive,

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:store/src/infrastructure/commons/params.dart';
 import '../models/admin_edit_product_dto.dart';
 import '../repositories/admin_edit_product_repository.dart';
 import '../../../../../generated/locales.g.dart';
@@ -67,6 +68,7 @@ class AdminEditProductController extends GetxController {
         tittle: tittleTextController.text,
         count: int.parse(countTextController.text),
         price: int.parse(priceTextController.text),
+        sellerId: Params.userId!,
         isActive: isActive.value,
       ),
     );

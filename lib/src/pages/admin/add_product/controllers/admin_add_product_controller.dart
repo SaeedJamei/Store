@@ -5,6 +5,7 @@ import '../../../../../generated/locales.g.dart';
 import '../models/admin_add_product_dto.dart';
 import 'dart:convert';
 import '../repositories/admin_add_product_repository.dart';
+import 'package:store/src/infrastructure/commons/params.dart';
 
 class AdminAddProductController extends GetxController {
   final AdminAddProductRepository _repository = AdminAddProductRepository();
@@ -74,6 +75,7 @@ class AdminAddProductController extends GetxController {
               tittle: tittleTextController.text,
               count: int.parse(countTextController.text.trim()),
               price: int.parse(priceTextController.text.trim()),
+              sellerId: Params.userId!,
             ),
           );
           isLoading.value = false;

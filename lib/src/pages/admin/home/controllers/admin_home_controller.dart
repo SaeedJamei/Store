@@ -35,6 +35,7 @@ class AdminHomeController extends GetxController {
     isGetProductsRetry.value = false;
     isGetProductsLoading.value = true;
     final result = await _repository.getProducts(
+      sellerId: Params.userId!,
       minPrice: minFilter,
       maxPrice: maxFilter,
       search: searchText,
@@ -53,7 +54,7 @@ class AdminHomeController extends GetxController {
   }
 
   Future<void> getMaxAndMinPrice() async {
-    final result = await _repository.getProductsBySortPrice();
+    final result = await _repository.getProductsBySortPrice(sellerId: Params.userId!);
     result.fold((left) {
       Get.showSnackbar(GetSnackBar(
         message: '${LocaleKeys.error.tr} : $left',
@@ -97,6 +98,7 @@ class AdminHomeController extends GetxController {
       id: product.id,
       tittle: product.tittle,
       price: product.price,
+      sellerId: Params.userId!,
       count: product.count,
       isActive: newValue,
     );

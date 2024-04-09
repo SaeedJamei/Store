@@ -2,7 +2,7 @@ class AdminHomeDto{
   final String tittle;
   final String? image, description;
   final List<String> colors;
-  final int price, count, id;
+  final int price, count, sellerId, id;
   final bool isActive;
 
   AdminHomeDto(
@@ -12,6 +12,7 @@ class AdminHomeDto{
         required this.id,
         required this.tittle,
         required this.price,
+        required this.sellerId,
         required this.count,
         required this.isActive,
       });
@@ -24,6 +25,7 @@ class AdminHomeDto{
       'colors' : colors ,
       'tittle' : tittle ,
       'price' : price ,
+      'sellerId' : sellerId ,
       'count' : count ,
       'isActive' : isActive ,
     };

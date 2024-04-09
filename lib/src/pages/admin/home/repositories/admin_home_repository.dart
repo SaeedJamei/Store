@@ -7,16 +7,18 @@ import '../models/admin_home_view_model.dart';
 
 class AdminHomeRepository {
   Future<Either<String, List<AdminHomeViewModel>>> getProducts({
+    required int sellerId,
     required int minPrice,
     required int maxPrice,
     required String? search,
   }) async {
     final String searchText = search ?? '';
     try {
-      if(minPrice == 0 || maxPrice == 0){
+      if (minPrice == 0 || maxPrice == 0) {
         final url =
-        Uri.http(RepositoryUrls.webBaseUrl, RepositoryUrls.getProduct, {
+            Uri.http(RepositoryUrls.webBaseUrl, RepositoryUrls.getProduct, {
           'q': searchText,
+          'sellerId': sellerId.toString(),
         });
         final response = await http.get(url);
         if (response.statusCode >= 200 && response.statusCode < 400) {
@@ -30,12 +32,13 @@ class AdminHomeRepository {
         } else {
           return Left(response.statusCode.toString());
         }
-      }else {
+      } else {
         final url =
-        Uri.http(RepositoryUrls.webBaseUrl, RepositoryUrls.getProduct, {
+            Uri.http(RepositoryUrls.webBaseUrl, RepositoryUrls.getProduct, {
           'price_lte': maxPrice.toString(),
           'price_gte': minPrice.toString(),
           'q': searchText,
+          'sellerId': sellerId.toString(),
         });
         final response = await http.get(url);
         if (response.statusCode >= 200 && response.statusCode < 400) {
@@ -56,10 +59,13 @@ class AdminHomeRepository {
   }
 
   Future<Either<String, List<AdminHomeViewModel>>>
-  getProductsBySortPrice() async {
+      getProductsBySortPrice({required int sellerId}) async {
     try {
-      final url = Uri.http(RepositoryUrls.webBaseUrl, RepositoryUrls.getProduct,
-          {'_sort': 'price'});
+      final url =
+          Uri.http(RepositoryUrls.webBaseUrl, RepositoryUrls.getProduct, {
+        '_sort': 'price',
+        'sellerId': sellerId.toString(),
+      });
       final response = await http.get(url);
       if (response.statusCode >= 200 && response.statusCode < 400) {
         List<dynamic> productsJson = jsonDecode(response.body);
