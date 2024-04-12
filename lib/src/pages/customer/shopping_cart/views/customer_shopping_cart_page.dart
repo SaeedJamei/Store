@@ -46,17 +46,17 @@ class CustomerShoppingCartPage extends GetView<CustomerShoppingCartController> {
                   child: Text(LocaleKeys.retry.tr),
                 ),
               )
-            : controller.products.isEmpty
+            : controller.selectedProducts.isEmpty
                 ? Text(
                     LocaleKeys.emptyList.tr,
                     overflow: TextOverflow.ellipsis,
                   )
                 : Expanded(
                     child: ListView.builder(
-                      itemCount: controller.products.length,
+                      itemCount: controller.selectedProducts.length,
                       itemBuilder: (context, index) =>
                           CustomerShoppingCartListItem(
-                        product: controller.products[index],
+                        product: controller.selectedProducts[index],
                         index: index,
                       ),
                     ),
@@ -83,7 +83,7 @@ class CustomerShoppingCartPage extends GetView<CustomerShoppingCartController> {
 
   Widget _paymentButton() => ElevatedButton(
       onPressed:
-          controller.products.isEmpty || controller.isPaymentLoading.value
+          controller.selectedProducts.isEmpty || controller.isPaymentLoading.value
               ? null
               : controller.onPaymentPressed,
       child: controller.isPaymentLoading.value

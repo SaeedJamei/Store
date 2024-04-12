@@ -116,9 +116,7 @@ class AdminAddProductPage extends GetView<AdminAddProductController> {
         maxLength: 10,
         controller: controller.countTextController,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        validator: (value) => value == null || value.isEmpty
-            ? LocaleKeys.thisIsRequired.tr
-            : null,
+        validator: (value) => controller.countFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           label: Text(
@@ -142,9 +140,7 @@ class AdminAddProductPage extends GetView<AdminAddProductController> {
         maxLength: 10,
         controller: controller.priceTextController,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        validator: (value) => value == null || value.isEmpty
-            ? LocaleKeys.thisIsRequired.tr
-            : null,
+        validator: (value) => controller.priceFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           label: Text(
@@ -189,9 +185,7 @@ class AdminAddProductPage extends GetView<AdminAddProductController> {
       child: TextFormField(
         maxLength: 100,
         controller: controller.tittleTextController,
-        validator: (value) => value == null || value.trim().isEmpty
-            ? LocaleKeys.thisIsRequired.tr
-            : null,
+        validator: (value) => controller.titleFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           label: Text(

@@ -57,13 +57,7 @@ class SignupPage extends GetView<SignupController> {
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
         controller: controller.repeatPasswordTextController,
-        validator: (value) {
-          return value == null || value.trim().isEmpty
-              ? LocaleKeys.thisIsRequired.tr
-              : value != controller.passwordTextController.text
-                  ? LocaleKeys.thisIsWrong.tr
-                  : null;
-        },
+        validator: (value) => controller.repeatPasswordFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           label: Text(
@@ -86,11 +80,7 @@ class SignupPage extends GetView<SignupController> {
       child: TextFormField(
         maxLength: 50,
         controller: controller.passwordTextController,
-        validator: (value) => value == null || value.trim().isEmpty
-            ? LocaleKeys.thisIsRequired.tr
-            : value.trim().length < 5
-                ? LocaleKeys.errorPassword.tr
-                : null,
+        validator: (value) => controller.passwordFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           label: Text(
@@ -113,9 +103,7 @@ class SignupPage extends GetView<SignupController> {
       child: TextFormField(
         maxLength: 50,
         controller: controller.userNameTextController,
-        validator: (value) => value == null || value.trim().isEmpty
-            ? LocaleKeys.thisIsRequired.tr
-            : null,
+        validator: (value) => controller.usernameFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           label: Text(
@@ -138,9 +126,7 @@ class SignupPage extends GetView<SignupController> {
       child: TextFormField(
         maxLength: 50,
         controller: controller.lastNameTextController,
-        validator: (value) => value == null || value.trim().isEmpty
-            ? LocaleKeys.thisIsRequired.tr
-            : null,
+        validator: (value) => controller.lastnameFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           label: Text(
@@ -163,9 +149,7 @@ class SignupPage extends GetView<SignupController> {
       child: TextFormField(
         maxLength: 50,
         controller: controller.firstNameTextController,
-        validator: (value) => value == null || value.trim().isEmpty
-            ? LocaleKeys.thisIsRequired.tr
-            : null,
+        validator: (value) => controller.firstnameFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           label: Text(

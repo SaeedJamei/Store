@@ -54,6 +54,20 @@ class AdminEditProductController extends GetxController {
     });
   }
 
+  String? countFieldValidator(value) {
+    return value == null || value.isEmpty ? LocaleKeys.thisIsRequired.tr : null;
+  }
+
+  String? priceFieldValidator(value) {
+    return value == null || value.isEmpty ? LocaleKeys.thisIsRequired.tr : null;
+  }
+
+  String? titleFieldValidator(value) {
+    return value == null || value.trim().isEmpty
+        ? LocaleKeys.thisIsRequired.tr
+        : null;
+  }
+
   Future<void> onEditPressed() async {
     if (!(formKey.currentState?.validate() ?? false)) {
       return;

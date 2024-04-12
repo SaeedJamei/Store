@@ -123,9 +123,7 @@ class LoginPage extends GetView<LoginController> {
         return TextFormField(
           maxLength: 50,
           controller: controller.passwordTextController,
-          validator: (value) => value == null || value.trim().isEmpty
-              ? LocaleKeys.thisIsRequired.tr
-              : null,
+          validator: (value) => controller.passwordFieldValidator(value),
           autovalidateMode: AutovalidateMode.onUserInteraction,
           obscureText: controller.isPasswordInvisible.value,
           decoration: InputDecoration(
@@ -154,9 +152,7 @@ class LoginPage extends GetView<LoginController> {
       child: TextFormField(
         maxLength: 50,
         controller: controller.userNameTextController,
-        validator: (value) => value == null || value.trim().isEmpty
-            ? LocaleKeys.thisIsRequired.tr
-            : null,
+        validator: (value) => controller.usernameFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           counterText: '',

@@ -19,6 +19,40 @@ class SignupController extends GetxController {
     isAdmin.value = newValue;
   }
 
+  String? repeatPasswordFieldValidator(value) {
+    return value == null || value.trim().isEmpty
+        ? LocaleKeys.thisIsRequired.tr
+        : value != passwordTextController.text
+            ? LocaleKeys.thisIsWrong.tr
+            : null;
+  }
+
+  String? passwordFieldValidator(value) {
+    return value == null || value.trim().isEmpty
+        ? LocaleKeys.thisIsRequired.tr
+        : value.trim().length < 5
+            ? LocaleKeys.errorPassword.tr
+            : null;
+  }
+
+  String? usernameFieldValidator(value) {
+    return value == null || value.trim().isEmpty
+        ? LocaleKeys.thisIsRequired.tr
+        : null;
+  }
+
+  String? lastnameFieldValidator(value) {
+    return value == null || value.trim().isEmpty
+        ? LocaleKeys.thisIsRequired.tr
+        : null;
+  }
+
+  String? firstnameFieldValidator(value) {
+    return value == null || value.trim().isEmpty
+        ? LocaleKeys.thisIsRequired.tr
+        : null;
+  }
+
   Future<void> onSignupTap() async {
     if (!(formKey.currentState?.validate() ?? false)) {
       return;

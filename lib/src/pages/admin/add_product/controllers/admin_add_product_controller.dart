@@ -35,7 +35,7 @@ class AdminAddProductController extends GetxController {
     }
   }
 
-  void onDeleteImagePressed(){
+  void onDeleteImagePressed() {
     imageToString.value = '';
   }
 
@@ -45,6 +45,20 @@ class AdminAddProductController extends GetxController {
 
   void onColorRemoveTap(int index) {
     colors.removeAt(index);
+  }
+
+  String? countFieldValidator(value) {
+    return value == null || value.isEmpty ? LocaleKeys.thisIsRequired.tr : null;
+  }
+
+  String? priceFieldValidator(value) {
+    return value == null || value.isEmpty ? LocaleKeys.thisIsRequired.tr : null;
+  }
+
+  String? titleFieldValidator(value) {
+    return value == null || value.trim().isEmpty
+        ? LocaleKeys.thisIsRequired.tr
+        : null;
   }
 
   Future<void> onRegisterPressed() async {

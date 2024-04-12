@@ -54,7 +54,7 @@ class CustomerShoppingCartListItem
             onPressed: () =>
             controller.isDisable.value
                 ? null
-                : controller.onDeleteTap(product: product, index: index),
+                : controller.onDeleteTap(product: product),
             icon: const Icon(Icons.delete),
           ),
         ],

@@ -38,6 +38,18 @@ class LoginController extends GetxController {
 
   void updateAppLanguage({required Locale locale}) => Get.updateLocale(locale);
 
+  String? usernameFieldValidator(value) {
+    return value == null || value.trim().isEmpty
+        ? LocaleKeys.thisIsRequired.tr
+        : null;
+  }
+
+  String? passwordFieldValidator(value) {
+    return value == null || value.trim().isEmpty
+        ? LocaleKeys.thisIsRequired.tr
+        : null;
+  }
+
   Future<void> onLoginTap() async {
     if (!(formKey.currentState?.validate() ?? false)) {
       return;

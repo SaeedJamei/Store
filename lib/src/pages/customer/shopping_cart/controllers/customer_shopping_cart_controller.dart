@@ -9,7 +9,7 @@ import '../../../../../generated/locales.g.dart';
 class CustomerShoppingCartController extends GetxController {
   final CustomerShoppingCartRepository _repository =
       CustomerShoppingCartRepository();
-  RxList<CustomerShoppingCartSelectedProductViewModel> products = RxList();
+  RxList<CustomerShoppingCartSelectedProductViewModel> selectedProducts = RxList();
   RxBool isGetProductsLoading = false.obs;
   RxBool isGetProductsRetry = false.obs;
   RxBool isDisable = false.obs;
@@ -35,7 +35,7 @@ class CustomerShoppingCartController extends GetxController {
         duration: const Duration(seconds: 2),
       ));
     }, (right) {
-      products.addAll(right);
+      selectedProducts.addAll(right);
       for (final product in right) {
         allTotalPrice.value =
             allTotalPrice.value + (product.selectedCount * product.price);
@@ -68,7 +68,7 @@ class CustomerShoppingCartController extends GetxController {
       )),
       (right) {
         allTotalPrice.value = allTotalPrice.value + product.price;
-        products[index] =
+        selectedProducts[index] =
             CustomerShoppingCartSelectedProductViewModel.fromJson(right);
       },
     );
@@ -98,14 +98,13 @@ class CustomerShoppingCartController extends GetxController {
               duration: const Duration(seconds: 2),
             )), (right) {
       allTotalPrice.value = allTotalPrice.value - product.price;
-      products[index] =
+      selectedProducts[index] =
           CustomerShoppingCartSelectedProductViewModel.fromJson(right);
     });
   }
 
   Future<void> onDeleteTap(
-      {required CustomerShoppingCartSelectedProductViewModel product,
-      required int index}) async {
+      {required CustomerShoppingCartSelectedProductViewModel product}) async {
     isDisable.value = true;
     final result = await _repository.deleteSelectedProduct(id: product.id);
     isDisable.value = false;
@@ -117,14 +116,14 @@ class CustomerShoppingCartController extends GetxController {
               ),
             ), (right) {
       allTotalPrice.value = 0;
-      products.clear();
+      selectedProducts.clear();
       getSelectedProductsByUserId();
     });
   }
 
   Future<void> onPaymentPressed() async {
     List<CustomerShoppingCartProductDto> dtoList = [];
-    for (final product in products) {
+    for (final product in selectedProducts) {
       isPaymentLoading.value = true;
       final result1 = await _repository.getProducts(id: product.productId);
       isPaymentLoading.value = false;
@@ -148,7 +147,7 @@ class CustomerShoppingCartController extends GetxController {
         dtoList.add(dto);
       });
     }
-    if (dtoList.length == products.length) {
+    if (dtoList.length == selectedProducts.length) {
       await patchToProductsAndRemoveFromSelectedProducts(dtoList);
     } else {
       await onPaymentPressed();
@@ -174,16 +173,16 @@ class CustomerShoppingCartController extends GetxController {
         },
       );
     }
-    if (counter == products.length) {
-      await removeFromSelectedProducts();
+    if (counter == selectedProducts.length) {
+      counter = 0;
+      await removeFromSelectedProducts(counter);
     } else {
       await patchToProductsAndRemoveFromSelectedProducts(dtoList);
     }
   }
 
-  Future<void> removeFromSelectedProducts() async {
-    int counter = 0;
-    for (final product in products) {
+  Future<void> removeFromSelectedProducts(int counter) async {
+    for (final product in selectedProducts) {
       isPaymentLoading.value = true;
       final result3 = await _repository.deleteSelectedProduct(id: product.id);
       isPaymentLoading.value = false;
@@ -196,11 +195,11 @@ class CustomerShoppingCartController extends GetxController {
               ),
           (right) => counter++);
     }
-    if (counter == products.length) {
-      products.clear();
+    if (counter == selectedProducts.length) {
+      selectedProducts.clear();
       Get.back();
     } else {
-      await removeFromSelectedProducts();
+      await removeFromSelectedProducts(counter);
     }
   }
 }

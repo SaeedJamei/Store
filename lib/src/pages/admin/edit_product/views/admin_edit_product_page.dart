@@ -53,7 +53,8 @@ class AdminEditProductPage extends GetView<AdminEditProductController> {
       onPressed:
           controller.isEditLoading.value ? null : controller.onEditPressed,
       child: controller.isEditLoading.value
-          ? Transform.scale(scale: 0.75 ,child: const CircularProgressIndicator())
+          ? Transform.scale(
+              scale: 0.75, child: const CircularProgressIndicator())
           : Text(LocaleKeys.edit.tr));
 
   Widget _addColors(BuildContext context) => Padding(
@@ -133,9 +134,7 @@ class AdminEditProductPage extends GetView<AdminEditProductController> {
         maxLength: 10,
         controller: controller.countTextController,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        validator: (value) => value == null || value.isEmpty
-            ? LocaleKeys.thisIsRequired.tr
-            : null,
+        validator: (value) => controller.countFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           label: Text(
@@ -159,9 +158,7 @@ class AdminEditProductPage extends GetView<AdminEditProductController> {
         maxLength: 10,
         controller: controller.priceTextController,
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        validator: (value) => value == null || value.isEmpty
-            ? LocaleKeys.thisIsRequired.tr
-            : null,
+        validator: (value) => controller.priceFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           label: Text(
@@ -206,9 +203,7 @@ class AdminEditProductPage extends GetView<AdminEditProductController> {
       child: TextFormField(
         maxLength: 100,
         controller: controller.tittleTextController,
-        validator: (value) => value == null || value.trim().isEmpty
-            ? LocaleKeys.thisIsRequired.tr
-            : null,
+        validator: (value) => controller.titleFieldValidator(value),
         autovalidateMode: AutovalidateMode.onUserInteraction,
         decoration: InputDecoration(
           label: Text(
