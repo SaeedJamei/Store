@@ -11,6 +11,7 @@ class AdminHomeRepository {
     required int minPrice,
     required int maxPrice,
     required String? search,
+    required String color,
   }) async {
     final String searchText = search ?? '';
     try {
@@ -19,6 +20,7 @@ class AdminHomeRepository {
             Uri.http(RepositoryUrls.webBaseUrl, RepositoryUrls.getProduct, {
           'q': searchText,
           'sellerId': sellerId.toString(),
+          'colors_like': color,
         });
         final response = await http.get(url);
         if (response.statusCode >= 200 && response.statusCode < 400) {
@@ -39,6 +41,7 @@ class AdminHomeRepository {
           'price_gte': minPrice.toString(),
           'q': searchText,
           'sellerId': sellerId.toString(),
+          'colors_like': color,
         });
         final response = await http.get(url);
         if (response.statusCode >= 200 && response.statusCode < 400) {
@@ -58,8 +61,8 @@ class AdminHomeRepository {
     }
   }
 
-  Future<Either<String, List<AdminHomeViewModel>>>
-      getProductsBySortPrice({required int sellerId}) async {
+  Future<Either<String, List<AdminHomeViewModel>>> getProductsBySortPrice(
+      {required int sellerId}) async {
     try {
       final url =
           Uri.http(RepositoryUrls.webBaseUrl, RepositoryUrls.getProduct, {

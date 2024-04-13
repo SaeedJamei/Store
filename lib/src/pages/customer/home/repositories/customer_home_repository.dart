@@ -10,6 +10,7 @@ class CustomerHomeRepository {
     required int minPrice,
     required int maxPrice,
     required String? search,
+    required String color,
   }) async {
     final String searchText = search ?? '';
     try {
@@ -19,6 +20,7 @@ class CustomerHomeRepository {
           'isActive': 'true',
           'count_gte': '1',
           'q': searchText,
+          'colors_like': color,
         });
         final response = await http.get(url);
         if (response.statusCode >= 200 && response.statusCode < 400) {
@@ -40,6 +42,7 @@ class CustomerHomeRepository {
           'price_lte': maxPrice.toString(),
           'price_gte': minPrice.toString(),
           'q': searchText,
+          'colors_like': color,
         });
         final response = await http.get(url);
         if (response.statusCode >= 200 && response.statusCode < 400) {
@@ -103,17 +106,18 @@ class CustomerHomeRepository {
     }
   }
 
-
-  Future<Either<String , String>> deleteSelectedProduct({required int id}) async{
-    try{
-      final url = Uri.http(RepositoryUrls.webBaseUrl , RepositoryUrls.deleteSelectedProductById(id: id));
+  Future<Either<String, String>> deleteSelectedProduct(
+      {required int id}) async {
+    try {
+      final url = Uri.http(RepositoryUrls.webBaseUrl,
+          RepositoryUrls.deleteSelectedProductById(id: id));
       final response = await http.delete(url);
-      if(response.statusCode >= 200 && response.statusCode < 400){
+      if (response.statusCode >= 200 && response.statusCode < 400) {
         return Right(response.body);
-      }else{
+      } else {
         return Left(response.body);
       }
-    }catch(error){
+    } catch (error) {
       return Left(error.toString());
     }
   }

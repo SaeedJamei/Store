@@ -186,7 +186,7 @@ class CustomerHomePage extends GetView<CustomerHomeController> {
                     return AlertDialog(
                       alignment: AlignmentDirectional.centerStart,
                       title: Text(
-                        LocaleKeys.price.tr,
+                        '${LocaleKeys.price.tr}/${LocaleKeys.color.tr}',
                         overflow: TextOverflow.ellipsis,
                       ),
                       content: PriceRangeSlider(
@@ -194,6 +194,9 @@ class CustomerHomePage extends GetView<CustomerHomeController> {
                         onFilterTap: controller.onFilterPressed,
                         max: controller.maxPrice.value.toDouble(),
                         min: controller.minPrice.value.toDouble(),
+                        colors: controller.filterColorsList.toList(),
+                        onColorTap: controller.onFilterColorTap,
+                        filterColorIndex: controller.filterColorIndex.value,
                         onChange: controller.rangePriceOnChange,
                         values: controller.rangeSliderValues.value,
                       ),

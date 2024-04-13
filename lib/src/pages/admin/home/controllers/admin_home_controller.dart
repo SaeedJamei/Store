@@ -20,6 +20,9 @@ class AdminHomeController extends GetxController {
   RxInt minPrice = RxInt(0);
   int maxFilter = 0;
   int minFilter = 0;
+  RxSet<String> filterColorsList = RxSet();
+  RxInt filterColorIndex = RxInt(-1);
+  String filterColor = '';
   final TextEditingController searchTextController = TextEditingController();
 
   @override
@@ -28,7 +31,7 @@ class AdminHomeController extends GetxController {
     getProducts(
       searchText: searchTextController.text,
     );
-    getMaxAndMinPrice();
+    getMaxAndMinPriceAndFilterColors();
   }
 
   Future<void> getProducts({required String searchText}) async {
@@ -39,6 +42,7 @@ class AdminHomeController extends GetxController {
       minPrice: minFilter,
       maxPrice: maxFilter,
       search: searchText,
+      color: filterColor,
     );
     isGetProductsLoading.value = false;
     result.fold((left) {
@@ -53,7 +57,7 @@ class AdminHomeController extends GetxController {
     });
   }
 
-  Future<void> getMaxAndMinPrice() async {
+  Future<void> getMaxAndMinPriceAndFilterColors() async {
     final result = await _repository.getProductsBySortPrice(sellerId: Params.userId!);
     result.fold((left) {
       Get.showSnackbar(GetSnackBar(
@@ -62,6 +66,9 @@ class AdminHomeController extends GetxController {
       ));
     }, (right) {
       if (right.isNotEmpty) {
+        for(final product in right){
+          filterColorsList.addAll(product.colors);
+        }
         minPrice.value = right[0].price;
         maxPrice.value = right[(right.length - 1)].price;
       }
@@ -79,8 +86,12 @@ class AdminHomeController extends GetxController {
     if (result != null) {
       final AdminHomeViewModel product = AdminHomeViewModel.fromJson(result);
       products.add(product);
-      getMaxAndMinPrice();
+      getMaxAndMinPriceAndFilterColors();
     }
+  }
+
+  void onFilterColorTap(int index){
+    filterColorIndex.value = index;
   }
 
   void onLogoutPressed() {
@@ -130,13 +141,16 @@ class AdminHomeController extends GetxController {
       AdminHomeViewModel product = AdminHomeViewModel.fromJson(result);
       int index = products.indexWhere((element) => element.id == product.id);
       products[index] = product;
-      getMaxAndMinPrice();
+      getMaxAndMinPriceAndFilterColors();
     }
   }
 
   Future<void> onFilterPressed() async {
     maxFilter = rangeSliderValues.value.end.round();
     minFilter = rangeSliderValues.value.start.round();
+    if(filterColorIndex.value != -1){
+      filterColor = filterColorsList.toList()[filterColorIndex.value];
+    }
     getProducts(
       searchText: searchTextController.text,
     );
@@ -145,6 +159,8 @@ class AdminHomeController extends GetxController {
   Future<void> onRemoveFilterPressed() async {
     maxFilter = 0;
     minFilter = 0;
+    filterColor = '';
+    filterColorIndex.value = -1;
     getProducts(
       searchText: searchTextController.text,
     );

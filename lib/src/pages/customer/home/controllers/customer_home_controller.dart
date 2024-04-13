@@ -8,8 +8,6 @@ import '../models/customer_home_product_view_model.dart';
 import '../repositories/customer_home_repository.dart';
 
 class CustomerHomeController extends GetxController {
-
-
   final CustomerHomeRepository _repository = CustomerHomeRepository();
   final SharedPreferences _preferences = Get.find<SharedPreferences>();
   RxList<CustomerHomeProductViewModel> products = RxList();
@@ -20,10 +18,11 @@ class CustomerHomeController extends GetxController {
   RxInt minPrice = RxInt(0);
   int maxFilter = 0;
   int minFilter = 0;
+  RxSet<String> filterColorsList = RxSet();
+  RxInt filterColorIndex = RxInt(-1);
+  String filterColor = '';
   RxInt allProductsSelectedCount = RxInt(0);
   final TextEditingController searchTextController = TextEditingController();
-
-
 
   @override
   void onInit() {
@@ -32,7 +31,7 @@ class CustomerHomeController extends GetxController {
       searchText: searchTextController.text,
     );
     getAllProductsSelectedCount();
-    getMaxAndMinPrice();
+    getMaxAndMinPriceAndFilterColors();
   }
 
   Future<void> getProducts({required String searchText}) async {
@@ -41,6 +40,7 @@ class CustomerHomeController extends GetxController {
       minPrice: minFilter,
       maxPrice: maxFilter,
       search: searchText,
+      color: filterColor,
     );
     isGetProductsLoading.value = false;
     isGetProductsRetry.value = false;
@@ -56,14 +56,17 @@ class CustomerHomeController extends GetxController {
     });
   }
 
-  Future<void> getMaxAndMinPrice() async {
+  Future<void> getMaxAndMinPriceAndFilterColors() async {
     final result = await _repository.getProductsBySortPrice();
     result.fold((left) {
       Get.showSnackbar(GetSnackBar(
         message: '${LocaleKeys.error.tr} : $left',
       ));
     }, (right) {
-      if(right.isNotEmpty){
+      if (right.isNotEmpty) {
+        for (final product in right) {
+          filterColorsList.addAll(product.colors);
+        }
         minPrice.value = right[0].price;
         maxPrice.value = right[(right.length - 1)].price;
       }
@@ -76,7 +79,8 @@ class CustomerHomeController extends GetxController {
   }
 
   Future<void> getAllProductsSelectedCount() async {
-    final result = await _repository.getSelectedProducts(userId: Params.userId!);
+    final result =
+        await _repository.getSelectedProducts(userId: Params.userId!);
     result.fold(
         (left) => Get.showSnackbar(
               GetSnackBar(
@@ -96,6 +100,10 @@ class CustomerHomeController extends GetxController {
     rangeSliderValues.value = newValues;
   }
 
+  void onFilterColorTap(int index) {
+    filterColorIndex.value = index;
+  }
+
   Future<void> onLogoutPressed() async {
     Params.userId = null;
     Params.isAdmin = null;
@@ -108,14 +116,18 @@ class CustomerHomeController extends GetxController {
       RouteNames.customerHomePage + RouteNames.customerDetailProductPage,
       parameters: {'productId': id.toString()},
     );
-    if(result != null){
-      allProductsSelectedCount.value = allProductsSelectedCount.value + result as int;
+    if (result != null) {
+      allProductsSelectedCount.value =
+          allProductsSelectedCount.value + result as int;
     }
   }
 
   void onFilterPressed() {
     maxFilter = rangeSliderValues.value.end.round();
     minFilter = rangeSliderValues.value.start.round();
+    if(filterColorIndex.value != -1){
+      filterColor = filterColorsList.toList()[filterColorIndex.value];
+    }
     getProducts(
       searchText: searchTextController.text,
     );
@@ -124,6 +136,8 @@ class CustomerHomeController extends GetxController {
   void onRemoveFilterPressed() {
     maxFilter = 0;
     minFilter = 0;
+    filterColor = '';
+    filterColorIndex.value = -1;
     getProducts(
       searchText: searchTextController.text,
     );
@@ -139,8 +153,10 @@ class CustomerHomeController extends GetxController {
 
   Future<void> onShoppingCartPressed() async {
     await Get.toNamed(
-        RouteNames.customerHomePage + RouteNames.customerShoppingCartPage,);
+      RouteNames.customerHomePage + RouteNames.customerShoppingCartPage,
+    );
     getProducts(searchText: searchTextController.text);
     getAllProductsSelectedCount();
+    getMaxAndMinPriceAndFilterColors();
   }
 }
